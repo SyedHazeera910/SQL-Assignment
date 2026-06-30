@@ -1,0 +1,169 @@
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \c root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 15 (X protocol)
+Server version: 8.0.45 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:33060+ ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| assignment         |
+| assisnment         |
+| college            |
+| data               |
+| information_schema |
+| mydatabase         |
+| mysql              |
+| mywork             |
+| owner_db           |
+| performance_schema |
+| pet_db             |
+| sys                |
++--------------------+
+Default schema set to `mydatabase`.
+Fetching global names, object names from `mydatabase` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > create table employee2(emp_id int primary key ,emp_name varchar(50) not null,dept_id int,salary decimal(10,2));
+Query OK, 0 rows affected (0.0364 sec)
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > desc employee2;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| emp_id   | int           | NO   | PRI | NULL    |       |
+| emp_name | varchar(50)   | NO   |     | NULL    |       |
+| dept_id  | int           | YES  |     | NULL    |       |
+| salary   | decimal(10,2) | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+4 rows in set (0.0025 sec)
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > insert into employee2 values (1,'ARUN',101,45000),(2,'BHAVYA',102,52000),(3,'CHITRA',101,47000),(4,'DINESH',103,39000),(5,'ESHA',NULL,41000),(6,'FARHAN',104,55000);
+Query OK, 6 rows affected (0.0122 sec)
+
+Records: 6  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select * from employee2;
++--------+----------+---------+----------+
+| emp_id | emp_name | dept_id | salary   |
++--------+----------+---------+----------+
+|      1 | ARUN     |     101 | 45000.00 |
+|      2 | BHAVYA   |     102 | 52000.00 |
+|      3 | CHITRA   |     101 | 47000.00 |
+|      4 | DINESH   |     103 | 39000.00 |
+|      5 | ESHA     |    NULL | 41000.00 |
+|      6 | FARHAN   |     104 | 55000.00 |
++--------+----------+---------+----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > insert into department values (101,'SALES'),(102,'HR'),(103,'IT'),(105,'MARKETING');
+Query OK, 4 rows affected (0.0114 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select * from department;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|     101 | SALES     |
+|     102 | HR        |
+|     103 | IT        |
+|     105 | MARKETING |
++---------+-----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name,salary from employee2 inner join department on employee2.dept_id=department.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| CHITRA   | SALES     | 47000.00 |
+| DINESH   | IT        | 39000.00 |
++----------+-----------+----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name,salary from employee2 left join department on employee2.dept_id=department.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| CHITRA   | SALES     | 47000.00 |
+| DINESH   | IT        | 39000.00 |
+| ESHA     | NULL      | 41000.00 |
+| FARHAN   | NULL      | 55000.00 |
++----------+-----------+----------+
+MySQL  localhost:33060+ ssl  mydatabase  SQL >  select emp_name,dept_name,salary from employee2 right join department on employee2.dept_id=department.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| CHITRA   | SALES     | 47000.00 |
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| DINESH   | IT        | 39000.00 |
+| NULL     | MARKETING |     NULL |
++----------+-----------+----------+
+MySQL  localhost:33060+ ssl  mydatabase  SQL > select * from employee2 left join department on employee2.dept_id=department.dept_id where department.dept_id is null;
++--------+----------+---------+----------+---------+-----------+
+| emp_id | emp_name | dept_id | salary   | dept_id | dept_name |
++--------+----------+---------+----------+---------+-----------+
+|      5 | ESHA     |    NULL | 41000.00 |    NULL | NULL      |
+|      6 | FARHAN   |     104 | 55000.00 |    NULL | NULL      |
++--------+----------+---------+----------+---------+-----------+
+ select * from employee2 right join department on employee2.dept_id=department.dept_id where employee2.emp_id is null;
++--------+----------+---------+--------+---------+-----------+
+| emp_id | emp_name | dept_id | salary | dept_id | dept_name |
++--------+----------+---------+--------+---------+-----------+
+|   NULL | NULL     |    NULL |   NULL |     105 | MARKETING |
++--------+----------+---------+--------+---------+-----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name,salary from employee2,department where employee2.dept_id=department.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| CHITRA   | SALES     | 47000.00 |
+| DINESH   | IT        | 39000.00 |
++----------+-----------+----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name,salary from department right join employee2 on  department.dept_id=employee2.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| CHITRA   | SALES     | 47000.00 |
+| DINESH   | IT        | 39000.00 |
+| ESHA     | NULL      | 41000.00 |
+| FARHAN   | NULL      | 55000.00 |
++----------+-----------+----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name,salary from department left join employee2 on department.dept_id=employee2.dept_id;
++----------+-----------+----------+
+| emp_name | dept_name | salary   |
++----------+-----------+----------+
+| CHITRA   | SALES     | 47000.00 |
+| ARUN     | SALES     | 45000.00 |
+| BHAVYA   | HR        | 52000.00 |
+| DINESH   | IT        | 39000.00 |
+| NULL     | MARKETING |     NULL |
++----------+-----------+----------+
+ MySQL  localhost:33060+ ssl  mydatabase  SQL > select emp_name,dept_name from employee2 cross join department;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| ARUN     | MARKETING |
+| ARUN     | IT        |
+| ARUN     | HR        |
+| ARUN     | SALES     |
+| BHAVYA   | MARKETING |
+| BHAVYA   | IT        |
+| BHAVYA   | HR        |
+| BHAVYA   | SALES     |
+| CHITRA   | MARKETING |
+| CHITRA   | IT        |
+| CHITRA   | HR        |
+| CHITRA   | SALES     |
+| DINESH   | MARKETING |
+| DINESH   | IT        |
+| DINESH   | HR        |
+| DINESH   | SALES     |
+| ESHA     | MARKETING |
+| ESHA     | IT        |
+| ESHA     | HR        |
+| ESHA     | SALES     |
+| FARHAN   | MARKETING |
+| FARHAN   | IT        |
+| FARHAN   | HR        |
+| FARHAN   | SALES     |
++----------+-----------+
